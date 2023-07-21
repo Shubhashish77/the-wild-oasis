@@ -1,18 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
-import React from 'react'
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import styled from "styled-components";
-import { getCabins } from '../../services/apiCabins';
-import Spinner from '../../ui/Spinner';
-import CabinRow from './CabinRow';
+import { getCabins } from "../../services/apiCabins";
+import Spinner from "../../ui/Spinner";
+import CabinRow from "./CabinRow";
+import Table from "../../ui/Table";
 
-const Table = styled.div`
-  border: 1px solid var(--color-grey-200);
+// const Table = styled.div`
+//   border: 1px solid var(--color-grey-200);
 
-  font-size: 1.4rem;
-  background-color: var(--color-grey-0);
-  border-radius: 7px;
-  overflow: hidden;
-`;
+//   font-size: 1.4rem;
+//   background-color: var(--color-grey-0);
+//   border-radius: 7px;
+//   overflow: hidden;
+// `;
 
 const TableHeader = styled.header`
   display: grid;
@@ -29,20 +30,22 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
-
-
 const CabinTable = () => {
-
-  const { isLoading, data: cabins, error } = useQuery({
-    queryKey: ['cabins'],
-    queryFn: getCabins
+  const {
+    isLoading,
+    data: cabins,
+    error,
+  } = useQuery({
+    queryKey: ["cabins"],
+    queryFn: getCabins,
   });
 
-  if (isLoading) return <Spinner />
+  if (isLoading) return <Spinner />;
 
   return (
-    <Table role='table'>
-      <TableHeader role='row'>
+    // <Table role='table'>
+    <Table columns=" 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      <Table.Header role="row">
         <div></div>
         <div>Cabins</div>
         <div>Capacity</div>
@@ -50,10 +53,14 @@ const CabinTable = () => {
         <div>Discount</div>
         <div></div>
         <div></div>
-      </TableHeader>
-      {cabins.map(cabin => <CabinRow cabin={cabin} key={cabin.id} />)}
-    </Table>
-  )
-}
+      </Table.Header>
 
-export default CabinTable
+      <Table.Body
+        data={cabins}
+        render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
+      ></Table.Body>
+    </Table>
+  );
+};
+
+export default CabinTable;
